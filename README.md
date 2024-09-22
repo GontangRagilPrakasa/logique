@@ -17,6 +17,52 @@ This is a REST API for the Digital Logique Indonesia application, built using No
 - Express.js (for routing)
 - Middleware for handling API keys
 
+# Entities Documentation
+
+This documentation describes the `Book` and `Genre` entities used in the Digital Logique Indonesia application.
+
+## Book Entity
+
+The `Book` entity represents a book in the system.
+
+## Table Structure
+
+| Column Name      | Type              | Description                                           |
+|------------------|-------------------|-------------------------------------------------------|
+| id               | `string` (UUID)   | The unique identifier for the book. Automatically generated. |
+| title            | `string`          | The title of the book. Must be unique.               |
+| author           | `string`          | The author of the book.                               |
+| publishedYear    | `number`          | The year the book was published.                      |
+| genres           | `Genre[]`         | A list of genres associated with the book. (One-to-Many relationship with the `Genre` entity) |
+| stock            | `number`          | The number of copies available in stock.             |
+
+## Relationships
+
+- **One-to-Many Relationship with Genre**
+  - A book can have multiple associated genres.
+## Genre Entity
+
+The `Genre` entity represents a genre in the application, associated with one or more books.
+
+### Table Structure
+
+The `genre` table is structured as follows:
+
+| Column Name  | Type     | Description                       |
+|--------------|----------|-----------------------------------|
+| id           | UUID     | Primary key, generated automatically. |
+| name         | String   | Name of the genre.               |
+| book_id      | UUID     | Foreign key referencing the `Book` entity. |
+
+## Relationships
+
+- **Many-to-One Relationship with Book**
+  - Each genre can be associated with one book.
+  - When a book is deleted, the associated genres will also be deleted (cascade delete).
+  - If a book is updated, the associated genres will also be updated (cascade update).
+
+
+
 ## API Endpoints
 
 ### 1. Create a Book
