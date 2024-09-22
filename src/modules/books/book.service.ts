@@ -18,9 +18,13 @@ export class BookService {
     async find(limit: number, page:number, keyword: string) {
         try {
             const [data, totalData] = await this.bookRepository.findAndCount({
-                where : {
-                    title : ILike(`${keyword}%`)
-                },
+                where: [
+                    { title: ILike(`${keyword}%`) },
+                    { author: ILike(`${keyword}%`) },
+                    { genres: {
+                        name : ILike(`%${keyword}%`)
+                    } } 
+                ],
                 relations : [...this.baseCondition.relations],
                 take : limit,
                 skip : (page - 1) * limit
