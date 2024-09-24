@@ -7,11 +7,16 @@ import 'reflect-metadata';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpecs from './documentation/swaggerOptions';
 import expressBasicAuth from "express-basic-auth";
+import { sanitizeMiddleware } from "./middlewares/sanitize.middleware";
+import { blockIPs, limiter } from "./middlewares/ddosProtection.middleware";
 
 dotenv.config();
 
 const app: Express = express();
 app.use(bodyParser.json());
+app.use(sanitizeMiddleware);
+app.use(limiter);
+app.use(blockIPs);
 
 
 const APP_SWAGGER_PASSWORD = process.env.APP_SWAGGER_PASSWORD ?? "passowrd"
